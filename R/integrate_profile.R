@@ -293,6 +293,10 @@ integrate_profile.vp <- function(x, alt_min = 0, alt_max = Inf, alpha = NA,
     output$v_wind <- stats::weighted.mean(get_quantity(x,"v_wind"), weight_densdh, na.rm = TRUE)
   }
 
+  if ("f" %in% names(x$data)){
+    output$f <- stats::weighted.mean(f, weight_densdh, na.rm = TRUE)
+  }
+
   class(output) <- c("vpi", "data.frame")
   rownames(output) <- NULL
   attributes(output)$alt_min <- alt_min
@@ -479,6 +483,10 @@ integrate_profile.vpts <- function(x, alt_min = 0, alt_max = Inf,
     output$ff_wind <- colSums(sqrt(get_quantity(x,"u_wind")^2 + get_quantity(x,"v_wind")^2) * weight_densdh, na.rm = TRUE)
     output$u_wind <- colSums(get_quantity(x,"u_wind") * weight_densdh, na.rm = TRUE)
     output$v_wind <- colSums(get_quantity(x,"v_wind") * weight_densdh, na.rm = TRUE)
+  }
+
+  if ("f" %in% names(x$data)){
+    output$f <- colSums(get_quantity(x,"f") * weight_densdh, na.rm = TRUE)
   }
 
   class(output) <- c("vpi", "data.frame")
